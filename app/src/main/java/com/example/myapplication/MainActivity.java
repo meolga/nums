@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         for (int i = 0; i < SIZE; i++) {
             LinearLayout row = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.row, null);
             binding.main.addView(row);
@@ -56,11 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 FrameLayout text = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.text, null);
                 ((TextView)text.findViewById(R.id.text)).setText("" + model.get(i, j));
                 row.addView(text);
+                text.setOnClickListener(v -> text.setSelected(true));
             }
         }
-
-
-
     }
-
 }
