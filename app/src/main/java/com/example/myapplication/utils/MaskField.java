@@ -36,8 +36,8 @@ public class MaskField {
         return field[pos.getY()][pos.getX()] != FREE;
     }
 
-    public boolean isOccupied(int x, int y) {
-        return field[y][x] != FREE;
+    public boolean isNotOccupied(int x, int y) {
+        return field[y][x] == FREE;
     }
 
     public void setTempMark(Position pos) {

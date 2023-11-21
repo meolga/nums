@@ -62,7 +62,7 @@ public class SearchChainsImpl implements SearchChains {
     }
 
     private Chain lookChains(int[][] field, Position pos, SearchDirection direction, Chains chains) {
-        //go thru the chain and try to find all xing chains
+        //go thru the chain and try to find all x-ing chains
 
         Chain tempChain = new Chain();
         Element element = new Element(field[pos.getY()][pos.getX()], pos);
@@ -76,7 +76,7 @@ public class SearchChainsImpl implements SearchChains {
             maskField.setTempMark(pos);
 
             List<SearchDirection> directions = findDirection(field, MAX, e, direction);
-            if (!isDirectionsOpposit(directions)) {
+            if (!isDirectionsOpposite(directions)) {
                 for (SearchDirection sub_directions : directions) {
                     Chain c = lookChains(field, e.getPos(), sub_directions, chains);
                     checkAndAdd(chains, c);
@@ -95,7 +95,7 @@ public class SearchChainsImpl implements SearchChains {
         return tempChain;
     }
 
-    private boolean isDirectionsOpposit(List<SearchDirection> directions) {
+    private boolean isDirectionsOpposite(List<SearchDirection> directions) {
         if (directions.size() != 2) {
             return false;
         }
@@ -127,28 +127,28 @@ public class SearchChainsImpl implements SearchChains {
         List<SearchDirection> ret = new ArrayList<>();
 
         if (direction == SearchDirection.NONE) {
-            if (x + 1 < max && value == field[y][x + 1] && !maskField.isOccupied(x + 1, y)) {
+            if (x + 1 < max && value == field[y][x + 1] && maskField.isNotOccupied(x + 1, y)) {
                 ret.add(SearchDirection.RIGHT);
             }
 
-            if (y + 1 < max && value == field[y + 1][x] && !maskField.isOccupied(x, y + 1)) {
+            if (y + 1 < max && value == field[y + 1][x] && maskField.isNotOccupied(x, y + 1)) {
                 ret.add(SearchDirection.DOWN);
             }
         } else if (direction == SearchDirection.RIGHT || direction == SearchDirection.LEFT) {
 
-            if (y - 1 >= 0 && value == field[y - 1][x] && !maskField.isOccupied(x, y - 1)) {
+            if (y - 1 >= 0 && value == field[y - 1][x] && maskField.isNotOccupied(x, y - 1)) {
                 ret.add(SearchDirection.UP);
             }
 
-            if (y + 1 < max && value == field[y + 1][x] && !maskField.isOccupied(x, y + 1)) {
+            if (y + 1 < max && value == field[y + 1][x] && maskField.isNotOccupied(x, y + 1)) {
                 ret.add(SearchDirection.DOWN);
             }
         } else if (direction == SearchDirection.UP || direction == SearchDirection.DOWN) {
-            if (x - 1 >= 0 && value == field[y][x - 1] && !maskField.isOccupied(x - 1, y)) {
+            if (x - 1 >= 0 && value == field[y][x - 1] && maskField.isNotOccupied(x - 1, y)) {
                 ret.add(SearchDirection.LEFT);
             }
 
-            if (x + 1 < max && value == field[y][x + 1] && !maskField.isOccupied(x + 1, y)) {
+            if (x + 1 < max && value == field[y][x + 1] && maskField.isNotOccupied(x + 1, y)) {
                 ret.add(SearchDirection.RIGHT);
             }
         }

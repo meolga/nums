@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chain {
-    private List<Element> chain;
+    private final List<Element> chain;
 
     public Chain() {
         chain = new ArrayList<>();
