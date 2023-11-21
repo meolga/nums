@@ -1,17 +1,15 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.LayoutInflater;
 import android.view.View;
-
-import com.example.myapplication.databinding.ActivityMainBinding;
-
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myapplication.databinding.ActivityMainBinding;
 
 import java.util.stream.IntStream;
 
@@ -46,9 +44,16 @@ public class MainActivity extends AppCompatActivity {
             IntStream.range(0, SIZE).forEach(j -> {
                 FrameLayout button = addButton(r, "" + model.get(i, j));
                 button.setOnClickListener(v -> button.setSelected(!button.isSelected()));
-                model.addListener(i, j, (i1, j1, value) -> ((TextView) button.findViewById(R.id.text)).setText("" + value));
+                model.addListener(i, j,
+                        (i1, j1, value) -> (
+                                (TextView) button.findViewById(R.id.text)).setText("" + value)
+                        ,
+                        (i2, j2, isGroup) -> (
+                                (TextView) button.findViewById(R.id.text)).setSelected(isGroup)
+                );
             });
-            addButton(r, RIGHT).setOnClickListener(v -> model.right(i));;
+            addButton(r, RIGHT).setOnClickListener(v -> model.right(i));
+            ;
         });
 
 

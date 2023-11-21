@@ -1,7 +1,10 @@
 package com.example.myapplication;
 
-import java.util.Collections;
-import java.util.stream.Collectors;
+import com.example.myapplication.utils.Chain;
+import com.example.myapplication.utils.Chains;
+import com.example.myapplication.utils.ChainsContainer;
+import com.example.myapplication.utils.Element;
+
 import java.util.stream.IntStream;
 
 public class Model {
@@ -9,10 +12,13 @@ public class Model {
     private final int size;
     private final ModelChangeListener[][] listeners;
 
+    private final ModelGroupListener[][] groupListeners;
+
 
     public Model(int size) {
         this.size = size;
         listeners = new ModelChangeListener[size][size];
+        groupListeners = new ModelGroupListener[size][size];
         field = new int[size][size];
 
         for (int i = 1; i < size; i++)
@@ -21,8 +27,9 @@ public class Model {
             }
     }
 
-    public void addListener(int i, int j, ModelChangeListener listener) {
+    public void addListener(int i, int j, ModelChangeListener listener, ModelGroupListener groupListener) {
         this.listeners[i][j] = listener;
+        this.groupListeners[i][j] = groupListener;
     }
 
     public int get(int i, int j) {
@@ -39,6 +46,7 @@ public class Model {
 
         field[i][size - 1] = v0;
         listeners[i][size - 1].valueChanged(i, size - 1, field[i][size - 1]);
+        updateField();
     }
 
     public void right(int i) {
@@ -51,6 +59,7 @@ public class Model {
 
         field[i][j] = v0;
         listeners[i][j].valueChanged(i, j, field[i][j]);
+        updateField();
     }
 
     public void up(int j) {
@@ -62,6 +71,7 @@ public class Model {
         }
         field[i][j] = v0;
         listeners[i][j].valueChanged(i, j, field[i][j]);
+        updateField();
     }
 
     public void down(int j) {
@@ -73,6 +83,35 @@ public class Model {
         }
         field[i][j] = v0;
         listeners[i][j].valueChanged(i, j, field[i][j]);
+        updateField();
     }
+
+
+    private void updateField() {
+        SearchChains searcher = new SearchChainsImpl();
+        ChainsContainer groups = searcher.search(field, size);
+
+        if (groups.isEmpty()) {
+            return;
+        }
+
+        //TODO: Strange code may be required to change API
+        IntStream.range(0, size).forEach(i -> {
+            IntStream.range(0, size).forEach(j -> {
+                groupListeners[j][i].group(j, i, false);
+            });
+        });
+
+        for (Chains chains : groups.getChainsList()) {
+            for (Chain chain : chains.getChainList()) {
+                for (Element element : chain.getElentList()) {
+                    int x = element.getPos().getX();
+                    int y = element.getPos().getY();
+                    groupListeners[y][x].group(y, x, true);
+                }
+            }
+        }
+    }
+
 
 }
