@@ -21,8 +21,8 @@ public class Model {
         groupListeners = new ModelGroupListener[size][size];
         field = new int[size][size];
 
-        for (int i = 1; i < size; i++)
-            for (int j = 1; j < size; j++) {
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++) {
                 field[i][j] = Math.floorMod((int) (Math.random() * 10), 3) + 1;
             }
     }
